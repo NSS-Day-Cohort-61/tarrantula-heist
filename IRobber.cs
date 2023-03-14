@@ -9,6 +9,7 @@ namespace Heist
 {
     public interface IRobber
     {
+        
         string Name { get; set; }
 
         int SkillLevel { get; set; }
