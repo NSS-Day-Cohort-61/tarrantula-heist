@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Heist
@@ -55,7 +56,27 @@ namespace Heist
                     Rolodex.Add(newMember);
                 }
             }
+            int cash = RandomNum(50000, 1000000);
+            int alarm = RandomNum(0, 100);
+            int vault = RandomNum(0, 100);
+            int security = RandomNum(0, 100);
+            Bank bank = new Bank(cash, alarm, vault, security);
 
+            Dictionary<string, int>BankDifficulties = new Dictionary<string, int>
+            {
+                {"Alarm", alarm},
+                {"Vault", vault},
+                {"Security Guard", security}
+            };
+
+            var sortedBankDifficulties = BankDifficulties.OrderByDescending(x => x.Value);
+
+            System.Console.WriteLine($"RECON REPORT: {sortedBankDifficulties.First().Key} is the most secure, {sortedBankDifficulties.Last().Key} is the least secure");
+
+        }
+        static int RandomNum(int num, int limit)
+        {
+            return new Random().Next(num, limit);
         }
     }
 }
