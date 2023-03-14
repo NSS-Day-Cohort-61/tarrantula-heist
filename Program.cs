@@ -21,7 +21,7 @@ namespace Heist
             Console.WriteLine("");
             Console.WriteLine("What's your patsy's name?");
             string name = Console.ReadLine();
-            Console.WriteLine("How good they is? 1-100");
+            Console.WriteLine("How badass are they? 1-100");
             int skill = int.Parse(Console.ReadLine());
             Console.WriteLine("How Not Scared Are They? 0.0 - 2.0");
             double courage = double.Parse(Console.ReadLine());
