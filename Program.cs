@@ -56,31 +56,39 @@ namespace Heist
                     Rolodex.Add(newMember);
                 }
             }
-            int cash = RandomNum(50000, 100000);
+            int cash = RandomNum(50000, 1000000);
             int alarm = RandomNum(0, 100);
             int vault = RandomNum(0, 100);
             int security = RandomNum(0, 100);
-           
-            Bank b = new Bank(cash, alarm, vault, security);
+            Bank bank = new Bank(cash, alarm, vault, security);
+
             Dictionary<string, int>BankDifficulties = new Dictionary<string, int>
             {
-                
-                   { "Alarm" , alarm },
-                   {"Vault Score", vault},
-                   {"Security Guard Level", security}
-                
+                {"Alarm", alarm},
+                {"Vault", vault},
+                {"Security Guard", security}
             };
+
             var sortedBankDifficulties = BankDifficulties.OrderByDescending(x => x.Value);
-            System.Console.WriteLine($"Recon Report: {sortedBankDifficulties.First().Key} is the most secure, {sortedBankDifficulties.Last()} is the least secure");
-            foreach(var person in Rolodex.Select((Value, Index) => (Value, Index)))
+
+            System.Console.WriteLine($"RECON REPORT: {sortedBankDifficulties.First().Key} is the most secure, {sortedBankDifficulties.Last().Key} is the least secure");
+
+            /*
+            Print out a report of the rolodex that includes each person's name, specialty, skill level, and cut. 
+            Include an index in the report for each operative so that the user can select them by that index in the next step. 
+            (You may want to update the IRobber interface and/or the implementing classes to be able to print out the specialty)*/
+
+            foreach(var person in Rolodex.Select((Value, Index) => (Value, Index)) )
             {
-                Console.WriteLine($"Operative ID: {person.Index+1} / Name: {person.Value.Name} / Specialty: {person.Value.GetType().Name} / Skill Level: {person.Value.SkillLevel} / Cut: {person.Value.PercentageCut}");
+                Console.WriteLine($"Operative ID: {person.Index+1} Name: {person.Value.Name} / Specialty: {person.Value.GetType().Name} / Skill Level: {person.Value.SkillLevel} / Cut: {person.Value.PercentageCut}");
             }
         }
         static int RandomNum(int num, int limit)
         {
             return new Random().Next(num, limit);
         }
+
+
     }
 }
 
