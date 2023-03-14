@@ -8,107 +8,54 @@ namespace Heist
     {
         static void Main(string[] args)
         {
-            List<Member> HeistCrew = new List<Member>();
+            Hacker Jenny = new Hacker("Jenny", 100, 30);
+            Muscle Logan = new Muscle("Logan", 80, 25);
+            LockSpecialist Nelson = new LockSpecialist("Nelson", 12, 0);
+            LockSpecialist Jacob = new LockSpecialist("Babbs", 45, 30);
+            Muscle Val = new Muscle("Val", 85, 10);
+            Hacker Steve = new Hacker("Coach", 99, 40);
 
+            List<IRobber> Rolodex = new List<IRobber>
+          {
+            Jenny, Logan, Nelson, Jacob, Val, Steve
+          };
 
-
-
-
-            Console.WriteLine("Plan your heist!!!");
-        another:
-            Console.WriteLine("Choose difficulty level: 1 = easy, 2 = average, 3 = difficult");
-            int difficulty = int.Parse(Console.ReadLine());
-            Console.WriteLine("");
-            Console.WriteLine("What's your patsy's name?");
-            string name = Console.ReadLine();
-            Console.WriteLine("How badass are they? 1-100");
-            int skill = int.Parse(Console.ReadLine());
-            Console.WriteLine("How Not Scared Are They? 0.0 - 2.0");
-            double courage = double.Parse(Console.ReadLine());
-            Console.WriteLine(@$"
-
-Name: {name} 
-Skill Level: {skill} 
-Courage Factor: {courage}");
-            Member member = new Member(name, skill, courage);
-
-            HeistCrew.Add(member);
-            Console.WriteLine("Do you need another member? Yes/No");
-            string answer = Console.ReadLine().ToLower();
-            if (answer == "yes")
+            while (true)
             {
-                goto another;
-            }
-            else
-            {
-                Console.WriteLine("---------------------------");
-                Console.Clear();
-                Console.WriteLine($"You have {HeistCrew.Count} partners in crime");
-
-            }
-            Console.WriteLine("");
-            Console.WriteLine("----------------------------");
-            Console.WriteLine("It's time to prepare. How many trial runs do you want to do? (0-5)");
-            int TrialRuns = int.Parse(Console.ReadLine());
-            foreach (var crewMem in HeistCrew)
-            {
-                Console.WriteLine(@$"
-Name: {crewMem.name},
-Skill level: {crewMem.skill},
-Courage Factor: {crewMem.courage}");
-                Console.WriteLine("---------");
-            }
-            int success = 0;
-            int failure = 0;
-
-            while (TrialRuns > 0)
-            {
-                Random r = new Random();
-                int Luck = r.Next(-10, 10);
-                int BankSecurity = 100;
-                if (difficulty == 1)
+                System.Console.WriteLine($"There are currently {Rolodex.Count} operatives to choose from for your heist.");
+                System.Console.WriteLine("Enter the name of a new crew member!");
+                string Name = Console.ReadLine();
+                if (Name == "")
                 {
-                    BankSecurity = 100;
+                    break;
                 }
-                else if (difficulty == 2)
+                System.Console.WriteLine(@"Choose your new crew members specialty! (1-3)
+          1.Hacker (Disables alarms)
+2. Muscle (Disarms guards)
+3. Lock Specialist (cracks vault)");
+                int specialtyInt = int.Parse(Console.ReadLine());
+                System.Console.WriteLine("What is your new crew members skill level? (0-100)");
+                int skillLevelInt = int.Parse(Console.ReadLine());
+                System.Console.WriteLine("What percentage of the cut is your crew member taking? (0-100)");
+                int percentCut = int.Parse(Console.ReadLine());
+
+                if (specialtyInt == 1)
                 {
-                    BankSecurity = 200;
+                    Hacker newMember = new Hacker(Name, skillLevelInt, percentCut);
+                    Rolodex.Add(newMember);
                 }
-                else 
+                else if (specialtyInt == 2)
                 {
-                    BankSecurity = 300;
+                    Muscle newMember = new Muscle(Name, skillLevelInt, percentCut);
+                    Rolodex.Add(newMember);
                 }
-
-
-                BankSecurity += Luck;
-
-
-                int CrewSkill = 0;
-                foreach (var crewMem in HeistCrew)
+                else if (specialtyInt == 3)
                 {
-                    CrewSkill += crewMem.skill;
-                }
-
-                Console.WriteLine($"The bank's security level is {BankSecurity}, and your crew has {CrewSkill} skill");
-                if (CrewSkill > BankSecurity)
-                {
-                    Console.WriteLine("The heist was a success!");
-                    TrialRuns--;
-                    success++;
-                    
-                    
-                }
-
-                else
-                {
-                    Console.WriteLine($"{HeistCrew[0].name} tripped the alarm! You're all screwed!");
-                    TrialRuns--;
-                    failure++;
+                    LockSpecialist newMember = new LockSpecialist(Name, skillLevelInt, percentCut);
+                    Rolodex.Add(newMember);
                 }
             }
-            Console.WriteLine(@$"
-success: {success} 
-failure: {failure}");
+
         }
     }
 }
