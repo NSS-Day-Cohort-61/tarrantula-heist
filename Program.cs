@@ -116,6 +116,18 @@ namespace Heist
             else
             {
                 System.Console.WriteLine("You're rich or something! yeehaw.");
+                double bankCash = Convert.ToDouble(bank.COH);
+                double playerPayout = bankCash;
+
+                foreach (IRobber member in crew)
+                {
+                    double memberPercentage = Convert.ToDouble(member.PercentageCut);
+                    double memberCut = bankCash * (memberPercentage / 100);
+                    playerPayout -= memberCut;
+                    Console.WriteLine($"{member.Name} is taking ${memberCut}");
+                }
+
+                Console.WriteLine($"You got ${playerPayout}");
             }
 
         }
