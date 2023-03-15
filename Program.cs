@@ -31,9 +31,9 @@ namespace Heist
                     break;
                 }
                 System.Console.WriteLine(@"Choose your new crew members specialty! (1-3)
-          1.Hacker (Disables alarms)
-2. Muscle (Disarms guards)
-3. Lock Specialist (cracks vault)");
+        1.Hacker (Disables alarms)
+        2. Muscle (Disarms guards)
+        3. Lock Specialist (cracks vault)");
                 int specialtyInt = int.Parse(Console.ReadLine());
                 System.Console.WriteLine("What is your new crew members skill level? (0-100)");
                 int skillLevelInt = int.Parse(Console.ReadLine());
@@ -62,7 +62,7 @@ namespace Heist
             int security = RandomNum(0, 100);
             Bank bank = new Bank(cash, alarm, vault, security);
 
-            Dictionary<string, int>BankDifficulties = new Dictionary<string, int>
+            Dictionary<string, int> BankDifficulties = new Dictionary<string, int>
             {
                 {"Alarm", alarm},
                 {"Vault", vault},
@@ -77,31 +77,53 @@ namespace Heist
             Print out a report of the rolodex that includes each person's name, specialty, skill level, and cut. 
             Include an index in the report for each operative so that the user can select them by that index in the next step. 
             (You may want to update the IRobber interface and/or the implementing classes to be able to print out the specialty)*/
-            Console.WriteLine("Choose Available Operative");
-            foreach(var person in Rolodex.Select((Value, Index) => (Value, Index)) )
-            {
-                
-                Console.WriteLine($"Operative ID: {person.Index+1} Name: {person.Value.Name} / Specialty: {person.Value.GetType().Name} / Skill Level: {person.Value.SkillLevel} / Cut: {person.Value.PercentageCut}");
-            }
-            List<IRobber>crew = new List<IRobber>();
+            List<IRobber> crew = new List<IRobber>();
             int cutSum = 0;
-            Console.WriteLine("Pick a number, any number!");
-            int OpId = int.Parse(Console.ReadLine());
-            
-            crew.Add(Rolodex[OpId-1]);
-            Rolodex.Remove(Rolodex[OpId -1]);
 
-            
+            while (Rolodex.Any())
+            {
 
-           
-           
+                Console.WriteLine("Available Operatives");
+                foreach (var person in Rolodex.Select((Value, Index) => (Value, Index)))
+                {
+
+                    Console.WriteLine($"Operative ID: {person.Index + 1} Name: {person.Value.Name} / Specialty: {person.Value.GetType().Name} / Skill Level: {person.Value.SkillLevel} / Cut: {person.Value.PercentageCut}");
+                }
+
+
+                Console.WriteLine("Choose an operator's ID to add to your heist crew, or hit ENTER to stop adding members.");
+                int OpId = int.Parse(Console.ReadLine());
+                if (OpId.ToString() == "")
+                {
+                    break;
+                }
+
+                crew.Add(Rolodex[OpId - 1]);
+                cutSum += Rolodex[OpId - 1].PercentageCut;
+                Rolodex.Remove(Rolodex[OpId - 1]);
+                Rolodex = Rolodex.Where(person => person.PercentageCut + cutSum <= 100).ToList();
+            }
+
+            foreach (var person in crew)
+            {
+                person.PerformSkill(bank);
+            }
+
+            if (bank.IsSecure)
+            {
+                System.Console.WriteLine("W A S T E D");
+            }
+            else
+            {
+                System.Console.WriteLine("You're rich or something! yeehaw.");
+            }
 
         }
         static int RandomNum(int num, int limit)
         {
             return new Random().Next(num, limit);
         }
-        
+
 
 
     }
