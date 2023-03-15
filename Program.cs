@@ -77,16 +77,31 @@ namespace Heist
             Print out a report of the rolodex that includes each person's name, specialty, skill level, and cut. 
             Include an index in the report for each operative so that the user can select them by that index in the next step. 
             (You may want to update the IRobber interface and/or the implementing classes to be able to print out the specialty)*/
-
+            Console.WriteLine("Choose Available Operative");
             foreach(var person in Rolodex.Select((Value, Index) => (Value, Index)) )
             {
+                
                 Console.WriteLine($"Operative ID: {person.Index+1} Name: {person.Value.Name} / Specialty: {person.Value.GetType().Name} / Skill Level: {person.Value.SkillLevel} / Cut: {person.Value.PercentageCut}");
             }
+            List<IRobber>crew = new List<IRobber>();
+            int cutSum = 0;
+            Console.WriteLine("Pick a number, any number!");
+            int OpId = int.Parse(Console.ReadLine());
+            
+            crew.Add(Rolodex[OpId-1]);
+            Rolodex.Remove(Rolodex[OpId -1]);
+
+            
+
+           
+           
+
         }
         static int RandomNum(int num, int limit)
         {
             return new Random().Next(num, limit);
         }
+        
 
 
     }
